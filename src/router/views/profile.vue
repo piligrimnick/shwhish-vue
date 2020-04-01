@@ -1,5 +1,6 @@
 <script>
 import Layout from '@layouts/main.vue'
+import { wishesComputed, wishesMethods } from '@state/helpers'
 
 export default {
   page() {
@@ -13,12 +14,23 @@ export default {
       ],
     }
   },
-  components: { Layout },
+  components: {
+    Layout,
+  },
   props: {
     user: {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    ...wishesComputed,
+  },
+  created() {
+    this.fetchWishes()
+  },
+  methods: {
+    ...wishesMethods,
   },
 }
 </script>
@@ -27,9 +39,14 @@ export default {
   <Layout>
     <h1>
       <BaseIcon name="user" />
-      {{ user.name }}
+      {{ user.username }}
       Profile
     </h1>
+    <div class="wishes">
+      <div v-for="wish in wishes" :key="wish.id" class="wishes">
+        <pre>{{ wish }}</pre>
+      </div>
+    </div>
     <pre>{{ user }}</pre>
   </Layout>
 </template>

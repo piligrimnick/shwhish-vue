@@ -4,26 +4,26 @@ module.exports = {
   all: [
     {
       id: 1,
-      username: 'admin',
+      email: 'admin',
       password: 'password',
       name: 'Vue Master',
     },
     {
       id: 2,
-      username: 'user1',
+      email: 'user1',
       password: 'password',
       name: 'User One',
     },
   ].map((user) => {
     return {
       ...user,
-      token: `valid-token-for-${user.username}`,
+      token: `valid-token-for-${user.email}`,
     }
   }),
-  authenticate({ username, password }) {
+  authenticate({ email, password }) {
     return new Promise((resolve, reject) => {
       const matchedUser = this.all.find(
-        (user) => user.username === username && user.password === password
+        (user) => user.email === email && user.password === password
       )
       if (matchedUser) {
         resolve(this.json(matchedUser))

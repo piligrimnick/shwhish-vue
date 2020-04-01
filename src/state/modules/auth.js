@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { endpoints } from '@constants/endpoints'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -28,11 +29,11 @@ export const actions = {
   },
 
   // Logs in the current user.
-  logIn({ commit, dispatch, getters }, { username, password } = {}) {
+  logIn({ commit, dispatch, getters }, { email, password } = {}) {
     if (getters.loggedIn) return dispatch('validate')
 
     return axios
-      .post('/api/session', { username, password })
+      .post(endpoints.auth, { email, password, grant_type: 'password' })
       .then((response) => {
         const user = response.data
         commit('SET_CURRENT_USER', user)
@@ -50,21 +51,14 @@ export const actions = {
   validate({ commit, state }) {
     if (!state.currentUser) return Promise.resolve(null)
 
-    return axios
-      .get('/api/session')
-      .then((response) => {
-        const user = response.data
-        commit('SET_CURRENT_USER', user)
-        return user
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          commit('SET_CURRENT_USER', null)
-        } else {
-          console.warn(error)
-        }
-        return null
-      })
+    return axios.get(endpoints.token_info).catch((error) => {
+      if (error.response && error.response.status === 401) {
+        commit('SET_CURRENT_USER', null)
+      } else {
+        console.warn(error)
+      }
+      return null
+    })
   },
 }
 
@@ -82,6 +76,6 @@ function saveState(key, state) {
 
 function setDefaultAuthHeaders(state) {
   axios.defaults.headers.common.Authorization = state.currentUser
-    ? state.currentUser.token
+    ? 'Bearer ' + state.currentUser.access_token
     : ''
 }
