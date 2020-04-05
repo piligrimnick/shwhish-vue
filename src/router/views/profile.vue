@@ -2,6 +2,8 @@
 import Layout from '@layouts/main.vue'
 import { wishesComputed, wishesMethods } from '@state/helpers'
 
+import Wish from '@components/wish.vue'
+
 export default {
   page() {
     return {
@@ -16,6 +18,7 @@ export default {
   },
   components: {
     Layout,
+    Wish,
   },
   props: {
     user: {
@@ -37,16 +40,21 @@ export default {
 
 <template>
   <Layout>
-    <h1>
-      <BaseIcon name="user" />
-      {{ user.username }}
-      Profile
-    </h1>
-    <div class="wishes">
-      <div v-for="wish in wishes" :key="wish.id" class="wishes">
-        <pre>{{ wish }}</pre>
-      </div>
-    </div>
-    <pre>{{ user }}</pre>
+    <v-row>
+      <v-col>
+        <v-container fluid class="wishes">
+          <v-row dense>
+            <v-col md="9">
+              <template v-for="wish in wishes">
+                <Wish :key="wish.id" :wish="wish" />
+              </template>
+            </v-col>
+            <v-col md="3">
+              User: {{ user.firstname }} {{ user.lastname }}
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
   </Layout>
 </template>

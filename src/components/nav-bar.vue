@@ -1,4 +1,6 @@
 <script>
+import { mapState, mapActions } from 'vuex'
+
 import { authComputed } from '@state/helpers'
 import NavBarRoutes from './nav-bar-routes.vue'
 
@@ -10,55 +12,54 @@ export default {
         {
           name: 'home',
           title: 'Home',
+          icon: 'mdi-home',
         },
       ],
       loggedInNavRoutes: [
         {
           name: 'profile',
-          title: () =>
-            this.currentUser.username
-              ? 'Logged in as ' + this.currentUser.username
-              : 'Logged in',
+          title: 'Personal area',
+          icon: 'mdi-face',
         },
         {
           name: 'logout',
           title: 'Log out',
+          icon: 'mdi-logout',
         },
       ],
       loggedOutNavRoutes: [
         {
           name: 'login',
           title: 'Log in',
+          icon: 'mdi-login',
         },
       ],
     }
   },
   computed: {
     ...authComputed,
+    ...mapState('bus', ['navigation']),
+    drawer: {
+      get: function() {
+        return this.navigation.drawer
+      },
+      set: function(attr) {
+        this.setDrawer(attr)
+      },
+    },
+  },
+  methods: {
+    ...mapActions('bus', ['setDrawer']),
   },
 }
 </script>
 
 <template>
-  <ul :class="$style.container">
-    <NavBarRoutes :routes="persistentNavRoutes" />
-    <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
-    <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
-  </ul>
+  <v-navigation-drawer v-model="drawer" app>
+    <v-list dense>
+      <NavBarRoutes :routes="persistentNavRoutes" />
+      <NavBarRoutes v-if="loggedIn" :routes="loggedInNavRoutes" />
+      <NavBarRoutes v-else :routes="loggedOutNavRoutes" />
+    </v-list>
+  </v-navigation-drawer>
 </template>
-
-<style lang="scss" module>
-@import '@design';
-
-.container {
-  padding: 0;
-  margin: 0 0 $size-grid-padding;
-  text-align: center;
-  list-style-type: none;
-
-  > li {
-    display: inline-block;
-    margin-right: $size-grid-padding;
-  }
-}
-</style>

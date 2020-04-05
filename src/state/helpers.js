@@ -11,3 +11,4 @@ export const authMethods = mapActions('auth', ['logIn', 'logOut'])
 
 export const wishesComputed = mapState('wishes', ['wishes'])
 export const wishesMethods = mapActions('wishes', ['fetchWishes'])
+export const wishMethods = mapActions('wishes', ['deleteWish'])

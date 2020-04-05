@@ -17,16 +17,6 @@ export default {
       tryingToLogIn: false,
     }
   },
-  computed: {
-    placeholders() {
-      return process.env.NODE_ENV === 'production'
-        ? {}
-        : {
-            email: 'Use "admin" to log in with the mock API',
-            password: 'Use "password" to log in with the mock API',
-          }
-    },
-  },
   methods: {
     ...authMethods,
     // Try to log the user in with the email
@@ -56,35 +46,52 @@ export default {
 
 <template>
   <Layout>
-    <form :class="$style.form" @submit.prevent="tryToLogIn">
-      <BaseInputText
-        v-model="email"
-        name="email"
-        :placeholder="placeholders.email"
-      />
-      <BaseInputText
-        v-model="password"
-        name="password"
-        type="password"
-        :placeholder="placeholders.password"
-      />
-      <BaseButton :disabled="tryingToLogIn" type="submit">
-        <BaseIcon v-if="tryingToLogIn" name="sync" spin />
-        <span v-else>
-          Log in
-        </span>
-      </BaseButton>
-      <p v-if="authError">
+    <v-container class="fill-height" fluid>
+      <v-row align="center" justify="center">
+        <v-col cols="12" md="8">
+          <v-card class="elevation-12">
+            <v-toolbar color="primary" dark flat>
+              <v-toolbar-title>Login form</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <v-form ref="form">
+                <v-text-field
+                  v-model="email"
+                  label="Login"
+                  name="email"
+                  prepend-icon="mdi-at"
+                  type="email"
+                  placeholder="email"
+                  :loading="tryingToLogIn"
+                />
+
+                <v-text-field
+                  id="password"
+                  v-model="password"
+                  label="Password"
+                  name="password"
+                  prepend-icon="mdi-lock"
+                  type="password"
+                  placeholder="password"
+                  :loading="tryingToLogIn"
+                />
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                :disabled="tryingToLogIn"
+                color="primary"
+                @click="tryToLogIn"
+                >Login</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!--       <p v-if="authError">
         There was an error logging in to your account.
-      </p>
-    </form>
+      </p> -->
   </Layout>
 </template>
-
-<style lang="scss" module>
-@import '@design';
-
-.form {
-  text-align: center;
-}
-</style>

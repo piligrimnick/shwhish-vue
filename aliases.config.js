@@ -14,6 +14,7 @@ const aliases = {
   '@state': 'src/state',
   '@design': 'src/design/index.scss',
   '@constants': 'src/constants',
+  '@plugins': 'src/plugins',
 }
 
 module.exports = {

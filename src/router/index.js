@@ -113,6 +113,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 // When each route is finished evaluating...
 router.afterEach((routeTo, routeFrom) => {
   // Complete the animation of the route progress bar.
+  store.dispatch('bus/setDrawer', false)
   NProgress.done()
 })
 

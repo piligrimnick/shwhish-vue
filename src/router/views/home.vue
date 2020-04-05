@@ -12,8 +12,5 @@ export default {
 </script>
 
 <template>
-  <Layout>
-    <h1>Home Page</h1>
-    <img src="@assets/images/logo.png" alt="Logo" />
-  </Layout>
+  <Layout> </Layout>
 </template>
