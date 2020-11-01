@@ -4,6 +4,7 @@ const _ = require('lodash')
 
 export const state = {
   wishes: [],
+  realisedWishes: [],
 }
 
 export const getters = {}
@@ -13,24 +14,50 @@ export const mutations = {
     state.wishes = wishes
   },
 
+  SET_REALISED_WISHES(state, realisedWishes) {
+    state.realisedWishes = realisedWishes
+  },
+
   DELETE_WISH(state, id) {
     const indexToDelete = _.findIndex(state.wishes, (wish) => wish.id === id)
     state.wishes.splice(indexToDelete, 1)
   },
+
+  REALISE_WISH(state, wish) {
+    state.realisedWishes.push(wish)
+  },
 }
 
 export const actions = {
-  fetchWishes: ({ commit, state, rootState }) => {
-    axios.get(endpoints.wishes.index).then((response) => {
+  fetchWishes: ({ commit, state, rootState }, { userId }) => {
+    axios.get(endpoints.wishes.user_wishes(userId)).then((response) => {
       const wishes = response.data
       commit('SET_WISHES', wishes)
       return wishes
     })
   },
 
+  fetchRealisedWishes: ({ commit, state, rootState }, { userId }) => {
+    axios
+      .get(endpoints.wishes.realised_user_wishes(userId))
+      .then((response) => {
+        const realisedWishes = response.data
+        commit('SET_REALISED_WISHES', realisedWishes)
+        return realisedWishes
+      })
+  },
+
   deleteWish: ({ commit, state }, id) => {
     axios.delete(endpoints.wishes.delete(id)).then(() => {
       commit('DELETE_WISH', id)
+    })
+  },
+
+  realiseWish: ({ commit, state }, id) => {
+    axios.put(endpoints.wishes.realise(id)).then((response) => {
+      commit('DELETE_WISH', id)
+      const wish = response.data
+      commit('REALISE_WISH', wish)
     })
   },
 }

@@ -12,5 +12,17 @@ export default {
 </script>
 
 <template>
-  <Layout> </Layout>
+  <Layout>
+    <v-container class="fill-height" fluid>
+      <v-row align="center" justify="center">
+        <v-col class="d-flex justify-center">
+          <p>
+            To start usage just send <tt>/start</tt> to
+            <a href="https://t.me/gowish_bot">@gowish_bot</a> and
+            <a href="/login">login through telegram</a>
+          </p>
+        </v-col>
+      </v-row>
+    </v-container>
+  </Layout>
 </template>

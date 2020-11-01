@@ -6,6 +6,13 @@ export const endpoints = {
   token_info: root + '/oauth/token/info',
   wishes: {
     index: root + '/api/wishes',
+    user_wishes: (userId) => `${root}/api/user_wishes/${userId}`,
+    realised_user_wishes: (userId) =>
+      `${root}/api/realised_user_wishes/${userId}`,
     delete: (id) => `${root}/api/wishes/${id}`,
+    realise: (id) => `${root}/api/wishes/${id}/realise`,
+  },
+  users: {
+    show: (id) => `${root}/api/users/${id}`,
   },
 }

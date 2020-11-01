@@ -7,8 +7,15 @@ export const authComputed = {
   ...mapGetters('auth', ['loggedIn']),
 }
 
-export const authMethods = mapActions('auth', ['logIn', 'logOut'])
+export const authMethods = mapActions('auth', [
+  'logIn',
+  'logOut',
+  'telegramLogIn',
+])
 
-export const wishesComputed = mapState('wishes', ['wishes'])
-export const wishesMethods = mapActions('wishes', ['fetchWishes'])
-export const wishMethods = mapActions('wishes', ['deleteWish'])
+export const wishesComputed = mapState('wishes', ['wishes', 'realisedWishes'])
+export const wishesMethods = mapActions('wishes', [
+  'fetchWishes',
+  'fetchRealisedWishes',
+])
+export const wishMethods = mapActions('wishes', ['deleteWish', 'realiseWish'])

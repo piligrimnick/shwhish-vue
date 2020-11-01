@@ -1,5 +1,5 @@
 <script>
-import { wishMethods } from '@state/helpers'
+import { wishMethods, authComputed } from '@state/helpers'
 
 export default {
   props: {
@@ -7,6 +7,18 @@ export default {
       type: Object,
       required: true,
     },
+    isOwner: {
+      type: Boolean,
+      required: true,
+    },
+    realised: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  computed: {
+    ...authComputed,
   },
   methods: {
     ...wishMethods,
@@ -15,21 +27,37 @@ export default {
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="344" outlined>
+  <v-card max-width="344" outlined>
     <v-card-text>
       {{ wish.body }}
     </v-card-text>
+    <v-card-text> </v-card-text>
     <v-card-actions>
-      <v-spacer />
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
+      <v-btn
+        v-if="wish.url"
+        target="_blank"
+        icon
+        :href="wish.url"
+        color="primary"
+      >
+        <v-icon> mdi-link </v-icon>
       </v-btn>
-      <base-dialog
-        yes="Confirm"
-        :button="{ isIcon: true, icon: 'mdi-delete' }"
-        :callback="deleteWish"
-        :payload="wish.id"
-      />
+      <v-spacer />
+      <template v-if="isOwner">
+        <base-dialog
+          v-if="!realised"
+          yes="Confirm"
+          :button="{ isIcon: true, icon: 'mdi-check' }"
+          :callback="realiseWish"
+          :payload="wish.id"
+        />
+        <base-dialog
+          yes="Confirm"
+          :button="{ isIcon: true, icon: 'mdi-delete' }"
+          :callback="deleteWish"
+          :payload="wish.id"
+        />
+      </template>
     </v-card-actions>
   </v-card>
 </template>

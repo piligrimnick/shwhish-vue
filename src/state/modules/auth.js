@@ -41,6 +41,19 @@ export const actions = {
       })
   },
 
+  telegramLogIn({ commit, dispatch, getters }, authData) {
+    return axios
+      .post(endpoints.auth, {
+        auth_data: authData,
+        grant_type: 'assertion',
+      })
+      .then((response) => {
+        const user = response.data
+        commit('SET_CURRENT_USER', user)
+        return user
+      })
+  },
+
   // Logs out the current user.
   logOut({ commit }) {
     commit('SET_CURRENT_USER', null)

@@ -33,19 +33,19 @@ export default [
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
   {
-    path: '/profile/:username',
+    path: '/profile/:user_id',
     name: 'username-profile',
     component: () => lazyLoadView(import('@views/profile.vue')),
     meta: {
-      authRequired: true,
+      authRequired: false,
       // HACK: In order to share data between the `beforeResolve` hook
       // and the `props` function, we must create an object for temporary
       // data only used during route resolution.
       tmp: {},
       beforeResolve(routeTo, routeFrom, next) {
         store
-          // Try to fetch the user's information by their username
-          .dispatch('users/fetchUser', { username: routeTo.params.username })
+          // Try to fetch the user's information by their id
+          .dispatch('users/fetchUser', { id: routeTo.params.user_id })
           .then((user) => {
             // Add the user to `meta.tmp`, so that it can
             // be provided as a prop.
@@ -54,7 +54,7 @@ export default [
             next()
           })
           .catch(() => {
-            // If a user with the provided username could not be
+            // If a user with the provided id could not be
             // found, redirect to the 404 page.
             next({ name: '404', params: { resource: 'User' } })
           })
