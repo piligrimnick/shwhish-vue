@@ -36,6 +36,11 @@ export default {
   data: () => ({
     dialog: null,
   }),
+  methods: {
+    callCallback() {
+      this.callback(this.payload).then(() => (this.dialog = false))
+    },
+  },
 }
 </script>
 
@@ -63,7 +68,7 @@ export default {
           {{ no }}
         </v-btn>
 
-        <v-btn color="green darken-1" text @click="callback(payload)">
+        <v-btn color="green darken-1" text @click="callCallback">
           {{ yes }}
         </v-btn>
       </v-card-actions>

@@ -11,6 +11,8 @@ export const endpoints = {
       `${root}/api/realised_user_wishes/${userId}`,
     delete: (id) => `${root}/api/wishes/${id}`,
     realise: (id) => `${root}/api/wishes/${id}/realise`,
+    book: (id) => `${root}/api/wishes/${id}/book`,
+    unbook: (id) => `${root}/api/wishes/${id}/unbook`,
   },
   users: {
     show: (id) => `${root}/api/users/${id}`,

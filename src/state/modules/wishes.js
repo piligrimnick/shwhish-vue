@@ -18,13 +18,23 @@ export const mutations = {
     state.realisedWishes = realisedWishes
   },
 
+  REALISE_WISH(state, wish) {
+    state.realisedWishes.push(wish)
+  },
+
   DELETE_WISH(state, id) {
-    const indexToDelete = _.findIndex(state.wishes, (wish) => wish.id === id)
+    const indexToDelete = _.findIndex(state.wishes, (w) => w.id === id)
     state.wishes.splice(indexToDelete, 1)
   },
 
-  REALISE_WISH(state, wish) {
-    state.realisedWishes.push(wish)
+  DELETE_REALISED_WISH(state, id) {
+    const indexToDelete = _.findIndex(state.realisedWishes, (w) => w.id === id)
+    state.realisedWishes.splice(indexToDelete, 1)
+  },
+
+  UPDATE_WISH(state, wish) {
+    const indexToUpdate = _.findIndex(state.wishes, (w) => w.id === wish.id)
+    state.wishes.splice(indexToUpdate, 1, wish)
   },
 }
 
@@ -47,9 +57,10 @@ export const actions = {
       })
   },
 
-  deleteWish: ({ commit, state }, id) => {
+  deleteWish: ({ commit, state }, { id, realised }) => {
     axios.delete(endpoints.wishes.delete(id)).then(() => {
-      commit('DELETE_WISH', id)
+      const mutation = realised ? 'DELETE_REALISED_WISH' : 'DELETE_WISH'
+      commit(mutation, id)
     })
   },
 
@@ -58,6 +69,23 @@ export const actions = {
       commit('DELETE_WISH', id)
       const wish = response.data
       commit('REALISE_WISH', wish)
+      return wish
+    })
+  },
+
+  bookWish: ({ commit, state }, id) => {
+    axios.put(endpoints.wishes.book(id)).then((response) => {
+      const wish = response.data
+      commit('UPDATE_WISH', wish)
+      return wish
+    })
+  },
+
+  unbookWish: ({ commit, state }, id) => {
+    axios.put(endpoints.wishes.unbook(id)).then((response) => {
+      const wish = response.data
+      commit('UPDATE_WISH', wish)
+      return wish
     })
   },
 }

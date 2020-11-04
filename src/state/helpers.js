@@ -18,4 +18,9 @@ export const wishesMethods = mapActions('wishes', [
   'fetchWishes',
   'fetchRealisedWishes',
 ])
-export const wishMethods = mapActions('wishes', ['deleteWish', 'realiseWish'])
+export const wishMethods = mapActions('wishes', [
+  'deleteWish',
+  'realiseWish',
+  'bookWish',
+  'unbookWish',
+])
