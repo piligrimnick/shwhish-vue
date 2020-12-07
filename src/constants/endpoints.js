@@ -15,6 +15,7 @@ export const endpoints = {
     unbook: (id) => `${root}/api/wishes/${id}/unbook`,
   },
   users: {
+    index: root + '/api/users',
     show: (id) => `${root}/api/users/${id}`,
   },
 }

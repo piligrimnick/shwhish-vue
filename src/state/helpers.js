@@ -24,3 +24,5 @@ export const wishMethods = mapActions('wishes', [
   'bookWish',
   'unbookWish',
 ])
+export const usersComputed = mapState('users', ['users'])
+export const usersMethods = mapActions('users', ['fetchUsers'])
