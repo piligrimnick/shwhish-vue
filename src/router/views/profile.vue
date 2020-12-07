@@ -94,9 +94,18 @@ export default {
   <Layout>
     <v-row>
       <v-col>
+        <v-container fluid>
+          <v-row dense>
+            <v-col>
+              <v-row v-if="user.firstname">
+                <v-col> User: {{ user.firstname }} {{ user.lastname }} </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-container fluid class="wishes">
           <v-row dense>
-            <v-col md="9">
+            <v-col>
               <v-sheet>
                 <Wish
                   v-for="wish in wishes"
@@ -132,23 +141,18 @@ export default {
                 </v-sheet>
               </template>
             </v-col>
-            <v-col md="3">
-              <v-row v-if="user.firstname">
-                <v-col> User: {{ user.firstname }} {{ user.lastname }} </v-col>
-              </v-row>
-              <v-row v-if="isOwner">
-                <v-col class="d-flex flex-column">
-                  <p> Share my wishes with: </p>
-                  <component
-                    :is="shareComponent.name"
-                    v-for="shareComponent in shareComponents"
-                    :key="shareComponent.name"
-                    :page_url="profileLink"
-                    :title_social="shareComponent.title"
-                    has_icon
-                  ></component>
-                </v-col>
-              </v-row>
+          </v-row>
+          <v-row v-if="isOwner">
+            <v-col class="d-flex flex-column">
+              <p> Share my wishes with: </p>
+              <component
+                :is="shareComponent.name"
+                v-for="shareComponent in shareComponents"
+                :key="shareComponent.name"
+                :page_url="profileLink"
+                :title_social="shareComponent.title"
+                has_icon
+              ></component>
             </v-col>
           </v-row>
         </v-container>

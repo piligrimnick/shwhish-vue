@@ -21,7 +21,7 @@ export default {
     ...authComputed,
 
     cardColor() {
-      return this.wish.booking ? '#33af7740' : '#66550010'
+      return this.wish.booking && !this.isOwner ? '#33af7740' : '#66550010'
     },
   },
   methods: {
@@ -52,14 +52,14 @@ export default {
           <base-dialog
             v-if="!wish.booking"
             yes="Confirm"
-            :button="{ isIcon: true, icon: 'mdi-pencil' }"
+            :button="{ text: 'Забронировать' }"
             :callback="bookWish"
             :payload="wish.id"
           />
           <base-dialog
             v-if="wish.booking && wish.booking.user_id === currentUser.id"
             yes="Confirm"
-            :button="{ isIcon: true, icon: 'mdi-pencil-off' }"
+            :button="{ text: 'Разбронировать' }"
             :callback="unbookWish"
             :payload="wish.id"
           />
@@ -69,13 +69,13 @@ export default {
         <base-dialog
           v-if="!realised"
           yes="Confirm"
-          :button="{ isIcon: true, icon: 'mdi-check' }"
+          :button="{ text: 'Исполнено!' }"
           :callback="realiseWish"
           :payload="wish.id"
         />
         <base-dialog
           yes="Confirm"
-          :button="{ isIcon: true, icon: 'mdi-delete' }"
+          :button="{ text: 'Удалить?' }"
           :callback="deleteWish"
           :payload="{ id: wish.id, realised: realised }"
         />
