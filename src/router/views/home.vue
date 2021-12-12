@@ -9,6 +9,9 @@ export default {
     meta: [{ name: 'description', content: appConfig.description }],
   },
   components: { Layout },
+  computed: {
+    ...usersComputed,
+  },
   created() {
     this.fetchUsers()
   },
@@ -24,9 +27,6 @@ export default {
         return `Пользователь с ID #${user.id}`
       }
     },
-  },
-  computed: {
-    ...usersComputed,
   },
 }
 </script>

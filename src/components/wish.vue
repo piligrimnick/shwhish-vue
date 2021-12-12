@@ -1,5 +1,6 @@
 <script>
 import { wishMethods, authComputed } from '@state/helpers'
+import { root } from '@constants/endpoints'
 
 export default {
   props: {
@@ -17,11 +18,16 @@ export default {
       default: false,
     },
   },
+
   computed: {
     ...authComputed,
 
     cardColor() {
       return this.wish.booking && !this.isOwner ? '#33af7740' : '#66550010'
+    },
+
+    src() {
+      return root + '/' + this.wish.picture_url
     },
   },
   methods: {
@@ -35,6 +41,7 @@ export default {
     <v-card-text>
       {{ wish.body }}
     </v-card-text>
+    <v-img v-if="wish.picture_url" height="200" :src="src" />
     <v-card-text> </v-card-text>
     <v-card-actions>
       <v-btn

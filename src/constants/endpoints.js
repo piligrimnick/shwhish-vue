@@ -1,7 +1,7 @@
-const root = 'https://api.shwish.app'
-// const root = 'http://localhost:3000'
+// const root = 'https://api.shwish.app'
+const root = 'http://localhost:3000'
 
-export const endpoints = {
+const endpoints = {
   auth: root + '/oauth/token',
   token_info: root + '/oauth/token/info',
   wishes: {
@@ -19,3 +19,5 @@ export const endpoints = {
     show: (id) => `${root}/api/users/${id}`,
   },
 }
+
+export { endpoints, root }
