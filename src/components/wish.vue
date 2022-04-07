@@ -27,7 +27,7 @@ export default {
     },
 
     src() {
-      return root + '/' + this.wish.picture_url
+      return root + this.wish.picture_url
     },
   },
   methods: {

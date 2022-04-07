@@ -1,5 +1,5 @@
-// const root = 'https://api.shwish.app'
-const root = 'http://localhost:3000'
+const root = 'https://api.wishes.bgmlv.com'
+// const root = 'http://localhost:3000'
 
 const endpoints = {
   auth: root + '/oauth/token',
