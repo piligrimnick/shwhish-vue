@@ -33,7 +33,7 @@
     "@fortawesome/vue-fontawesome": "0.1.9",
     "axios": "0.19.2",
     "caniuse-lite": "^1.0.30001283",
-    "core-js": "3.6.4",
+    "core-js": "3.40.0",
     "date-fns": "2.10.0",
     "lodash": "4.17.15",
     "normalize.css": "8.0.1",
