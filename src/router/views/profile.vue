@@ -6,9 +6,7 @@ import Wish from '@components/wish.vue'
 
 import vueGoodshareFacebook from 'vue-goodshare/src/providers/Facebook.vue'
 import vueGoodshareTelegram from 'vue-goodshare/src/providers/Telegram.vue'
-import vueGoodshareTwitter from 'vue-goodshare/src/providers/Twitter.vue'
 import vueGoodshareEmail from 'vue-goodshare/src/providers/Email.vue'
-import vueGoodshareVkontakte from 'vue-goodshare/src/providers/Vkontakte.vue'
 import vueGoodshareWhatsApp from 'vue-goodshare/src/providers/WhatsApp.vue'
 
 export default {
@@ -28,9 +26,7 @@ export default {
     Wish,
     vueGoodshareFacebook,
     vueGoodshareTelegram,
-    vueGoodshareTwitter,
     vueGoodshareEmail,
-    vueGoodshareVkontakte,
     vueGoodshareWhatsApp,
   },
   props: {
@@ -39,6 +35,9 @@ export default {
       required: true,
     },
   },
+  data: () => ({
+    wishesOrder: 'created_at desc',
+  }),
   computed: {
     ...wishesComputed,
     ...authComputed,
@@ -56,10 +55,6 @@ export default {
           title: 'Telegram',
         },
         {
-          name: 'vue-goodshare-twitter',
-          title: 'Twitter',
-        },
-        {
           name: 'vue-goodshare-email',
           title: 'Email',
         },
@@ -67,19 +62,27 @@ export default {
           name: 'vue-goodshare-facebook',
           title: 'Facebook',
         },
-        {
-          name: 'vue-goodshare-vkontakte',
-          title: 'VK',
-        },
       ]
     },
 
     profileLink() {
       return `${location.origin}/profile/${this.currentUser.id}`
     },
+
+    sortValues() {
+      return [
+        { text: 'Сначала новые', value: 'created_at desc' },
+        { text: 'Сначала старые', value: 'created_at asc' },
+      ]
+    },
+  },
+  watch: {
+    wishesOrder(newValue, oldValue) {
+      this.fetchWishes({ userId: this.user.id, o: this.wishesOrder })
+    },
   },
   created() {
-    this.fetchWishes({ userId: this.user.id })
+    this.fetchWishes({ userId: this.user.id, o: this.wishesOrder })
     if (this.loggedIn) {
       this.fetchRealisedWishes({ userId: this.user.id })
     }
@@ -103,19 +106,26 @@ export default {
             </v-col>
           </v-row>
         </v-container>
-        <v-container fluid class="wishes">
-          <v-row dense>
+        <v-container class="wishes">
+          <v-row>
             <v-col>
-              <v-sheet>
-                <Wish
-                  v-for="wish in wishes"
-                  :key="wish.id"
-                  :wish="wish"
-                  :is-owner="isOwner"
-                  class="mx-auto my-1"
-                />
-              </v-sheet>
-
+              <v-select
+                v-model="wishesOrder"
+                :items="sortValues"
+                label="Сортировка"
+              >
+              </v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <Wish
+                v-for="wish in wishes"
+                :key="wish.id"
+                :wish="wish"
+                :is-owner="isOwner"
+                class="mx-2 my-1"
+              />
               <template v-if="isOwner">
                 <v-divider v-if="wishes.length && realisedWishes.length" />
                 <v-sheet>

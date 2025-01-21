@@ -37,12 +37,19 @@ export default {
 </script>
 
 <template>
-  <v-card max-width="344" :color="cardColor" outlined>
-    <v-card-text>
-      {{ wish.body }}
-    </v-card-text>
-    <v-img v-if="wish.picture_url" height="200" :src="src" />
-    <v-card-text> </v-card-text>
+  <v-card :color="cardColor" outlined>
+    <v-card-title> {{ wish.body.slice(0, 30) }}... </v-card-title>
+    <v-card-subtitle>
+      {{ new Date(wish.created_at).toLocaleString('ru-RU') }}
+    </v-card-subtitle>
+    <div class="d-flex flex-no-wrap justify-space-between">
+      <v-card-text>
+        {{ wish.body }}
+      </v-card-text>
+      <v-avatar class="ma-3" size="150" tile>
+        <v-img v-if="wish.picture_url" contain :src="src" />
+      </v-avatar>
+    </div>
     <v-card-actions>
       <v-btn
         v-if="wish.url"
@@ -66,7 +73,7 @@ export default {
           <base-dialog
             v-if="wish.booking && wish.booking.user_id === currentUser.id"
             yes="Confirm"
-            :button="{ text: 'Разбронировать' }"
+            :button="{ text: 'Снять бронь' }"
             :callback="unbookWish"
             :payload="wish.id"
           />
@@ -76,13 +83,13 @@ export default {
         <base-dialog
           v-if="!realised"
           yes="Confirm"
-          :button="{ text: 'Исполнено!' }"
+          :button="{ text: 'Архивировать' }"
           :callback="realiseWish"
           :payload="wish.id"
         />
         <base-dialog
           yes="Confirm"
-          :button="{ text: 'Удалить?' }"
+          :button="{ text: 'Удалить' }"
           :callback="deleteWish"
           :payload="{ id: wish.id, realised: realised }"
         />

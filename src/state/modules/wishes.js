@@ -39,17 +39,21 @@ export const mutations = {
 }
 
 export const actions = {
-  fetchWishes: ({ commit, state, rootState }, { userId }) => {
-    axios.get(endpoints.wishes.user_wishes(userId)).then((response) => {
-      const wishes = response.data
-      commit('SET_WISHES', wishes)
-      return wishes
-    })
+  fetchWishes: ({ commit, state, rootState }, { userId, s, o }) => {
+    axios
+      .get(endpoints.wishes.user_wishes(userId), { params: { s: s, o: o } })
+      .then((response) => {
+        const wishes = response.data
+        commit('SET_WISHES', wishes)
+        return wishes
+      })
   },
 
-  fetchRealisedWishes: ({ commit, state, rootState }, { userId }) => {
+  fetchRealisedWishes: ({ commit, state, rootState }, { userId, s, o }) => {
     axios
-      .get(endpoints.wishes.realised_user_wishes(userId))
+      .get(endpoints.wishes.realised_user_wishes(userId), {
+        params: { s: s, o: o },
+      })
       .then((response) => {
         const realisedWishes = response.data
         commit('SET_REALISED_WISHES', realisedWishes)
